@@ -1,0 +1,3 @@
+[submodule ".vcpkg"]
+	path = .vcpkg
+	url = https://git.nas.reika.games/AIMation/VCPKG_Reika

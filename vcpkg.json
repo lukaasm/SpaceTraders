@@ -1,0 +1,29 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "lst",
+    "version": "0.0.0",
+    "dependencies": [
+        "sdl2",
+        "fmt",
+        "nlohmann-json",
+        "argparse",
+        "openssl",
+        "cpp-httplib",
+        "tl-expected",
+        {
+            "name": "imgui",
+            "features": [
+                "dx11-binding",
+                "sdl2-binding"
+            ]
+        }
+    ],
+    "overrides": [
+        {
+            "name": "openssl",
+            "version-string": "1.1.1n"
+        }
+    ],
+
+    "builtin-baseline": "a2261f65ea979eebf56074f604776160f0074b09"
+}
