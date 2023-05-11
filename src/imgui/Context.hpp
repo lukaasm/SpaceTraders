@@ -14,6 +14,7 @@ namespace ImGui
         Context();
         ~Context();
 
+        void Initialize();
         bool PollEvents( lst::Device & device );
     };
 }

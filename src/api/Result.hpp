@@ -11,6 +11,9 @@ namespace lst::api
     template<typename T >
     using Result = tl::expected<T, std::error_code>;
 
+    template<typename T >
+    using PagedResult = Result< std::vector< T > >;
+
     struct HttpErrorCategory : public std::error_category
     {
         virtual const char * name() const noexcept
@@ -29,7 +32,7 @@ namespace lst::api
             return std::error_code{status, s_category};
         }
 
-        template<typename T >
+        template<typename T>
         static Result< T > MakeUnexpected( int status )
         {
             return tl::make_unexpected( MakeError( status ) );

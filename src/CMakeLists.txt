@@ -24,6 +24,11 @@ target_include_directories( SpaceTraders
         ${CPP_HTTPLIB_INCLUDE_DIRS}
 )
 
+target_compile_definitions( SpaceTraders
+    PUBLIC
+        IMGUI_DEFINE_MATH_OPERATORS
+)
+
 if (WIN32)
     target_compile_definitions( SpaceTraders
         PRIVATE

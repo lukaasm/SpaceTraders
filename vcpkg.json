@@ -14,7 +14,10 @@
             "name": "imgui",
             "features": [
                 "dx11-binding",
-                "sdl2-binding"
+                "sdl2-binding",
+                "win32-binding",
+                "docking-experimental",
+                "freetype"
             ]
         }
     ],

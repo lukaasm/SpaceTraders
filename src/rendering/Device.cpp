@@ -3,6 +3,7 @@
 #include "imgui.h"
 #include "imgui_impl_dx11.h"
 #include "imgui_impl_sdl.h"
+#include "imgui_impl_win32.h"
 
 #include <SDL.h>
 #include <SDL_syswm.h>
@@ -37,6 +38,7 @@ namespace lst
         SDL_GetWindowWMInfo( window, &wmInfo );
 
         HWND hWnd = ( HWND )wmInfo.info.win.window;
+        ::ImGui_ImplWin32_EnableAlphaCompositing( hWnd );
 
         // Setup swap chain
         DXGI_SWAP_CHAIN_DESC sd;
@@ -103,6 +105,13 @@ namespace lst
         m_pd3dDeviceContext->ClearRenderTargetView( m_mainRenderTargetView, color );
 
         ImGui_ImplDX11_RenderDrawData( ImGui::GetDrawData() );
+
+        // Update and Render additional Platform Windows
+        if ( ImGui::GetIO().ConfigFlags & ImGuiConfigFlags_ViewportsEnable )
+        {
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+        }
 
         m_pSwapChain->Present( 1, 0 );
     }

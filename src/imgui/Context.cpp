@@ -25,6 +25,19 @@ namespace ImGui
 
         ImGui::CreateContext();
 
+        auto & io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+        io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    }
+
+    Context::~Context()
+    {
+        ImGui::DestroyContext();
+    }
+
+    void Context::Initialize()
+    {
+
         auto & style = ImGui::GetStyle();
         style = ImGuiStyle{};
 
@@ -108,17 +121,20 @@ namespace ImGui
         style.Colors[ ImGuiCol_ResizeGrip ] = style.Colors[ ImGuiCol_FrameBg ];
         style.Colors[ ImGuiCol_Separator ] = style.Colors[ ImGuiCol_Border ];
 
-        //float scale = ImGui::GetMainViewport()->DpiScale;
-        //if ( ImGui::GetPlatformIO().Platform_GetWindowDpiScale )
-        //    scale = ImGui::GetPlatformIO().Platform_GetWindowDpiScale( ImGui::GetMainViewport() );
-        //style.ScaleAllSizes( scale );
+        float scale = 1.0f;
+
+        float ddpi;
+        if ( SDL_GetDisplayDPI( 0, &ddpi, NULL, NULL ) != -1 )
+            scale = ddpi / 96.f;
+
+        style.ScaleAllSizes( scale );
 
         ImFontConfig config = {};
         config.RasterizerMultiply = 1.3f;
         config.OversampleH = 4;
         config.OversampleH = 4;
 
-        ImGui::GetIO().Fonts->AddFontFromFileTTF( "assets/fonts/Roboto-Regular.ttf", 18.0f, &config );
+        ImGui::GetIO().Fonts->AddFontFromFileTTF( "assets/fonts/Roboto-Regular.ttf", 18.0f * scale, &config );
 
         config.MergeMode = true;
         config.PixelSnapH = true;
@@ -128,12 +144,7 @@ namespace ImGui
             ICON_MIN_FA, ICON_MAX_FA, 0
         };
 
-        ImGui::GetIO().Fonts->AddFontFromFileTTF( "assets/fonts/fa-solid-900.ttf", 18.0f, &config, FAS_GLYPH_RANGE );
-    }
-
-    Context::~Context()
-    {
-        ImGui::DestroyContext();
+        ImGui::GetIO().Fonts->AddFontFromFileTTF( "assets/fonts/fa-solid-900.ttf", 16.0f * scale, &config, FAS_GLYPH_RANGE );
     }
 
     bool Context::PollEvents( lst::Device & device )

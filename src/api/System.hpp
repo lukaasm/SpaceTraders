@@ -7,7 +7,7 @@
 
 namespace lst::api
 {
-    struct Waypoint
+    struct SystemWaypoint
     {
         std::string symbol;
         std::string type;
@@ -15,7 +15,14 @@ namespace lst::api
         int x = {};
         int y = {};
 
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE( Waypoint, symbol, type, x, y );
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE( SystemWaypoint, symbol, type, x, y );
+    };
+
+    struct SystemFaction
+    {
+        std::string symbol;
+
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE( SystemFaction, symbol );
     };
 
     struct System
@@ -27,9 +34,10 @@ namespace lst::api
         int x = {};
         int y = {};
 
-        std::vector< Waypoint > waypoints;
+        std::vector< SystemWaypoint >   waypoints;
+        std::vector< SystemFaction >    factions;
 
-        NLOHMANN_DEFINE_TYPE_INTRUSIVE( System, symbol, sectorSymbol, type, x, y, waypoints );
+        NLOHMANN_DEFINE_TYPE_INTRUSIVE( System, symbol, sectorSymbol, type, x, y, waypoints, factions );
     };
 
     Result<std::vector<System>> GetSystems( size_t page = 1, size_t limit = 20 );
