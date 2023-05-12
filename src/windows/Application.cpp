@@ -32,6 +32,15 @@ namespace lst
             ImGui::EndTabItem();
         }
 
+        if ( ImGui::BeginTabItem( ICON_FA_FILE_CONTRACT" Factions##factions" ) )
+        {
+            ImGui::BeginChild( "##factions", ImGui::GetContentRegionAvail(), true );
+            m_factions.DrawWindow();
+            ImGui::EndChild();
+
+            ImGui::EndTabItem();
+        }
+
         if ( ImGui::BeginTabItem( ICON_FA_FILE_CONTRACT" Contracts##contracts" ) )
         {
             ImGui::BeginChild( "##starmap", ImGui::GetContentRegionAvail(), true );

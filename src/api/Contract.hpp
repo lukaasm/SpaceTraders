@@ -51,5 +51,6 @@ namespace lst::api
         NLOHMANN_DEFINE_TYPE_INTRUSIVE( Contract, id, factionSymbol, type, terms, accepted, fulfilled, expiration );
     };
 
-    PagedResult< Contract > GetMyContracts( size_t page = 1, size_t limit = 20 );
+    Result< Contract >      GetContract( const std::string & contractId );
+    PagedResult< Contract > GetContracts( size_t page = 1, size_t limit = 20 );
 }

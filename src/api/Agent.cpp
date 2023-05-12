@@ -13,7 +13,7 @@ namespace lst::api
         auto content = body.dump();
         auto response = GetEndpoint().Post( "v2/register", content.c_str(), content.size(), "application/json" );
         if ( response->status != 200 )
-            return HttpErrorCategory::MakeUnexpected< Registrar >( response->status );
+            return HttpErrorCategory::MakeUnexpected( response->status );
 
         return nlohmann::json::parse( response->body ).get< Registrar >();
     }
@@ -25,7 +25,7 @@ namespace lst::api
 
         auto response = GetEndpoint().Get( "v2/my/agent" );
         if ( response->status != 200 )
-            return HttpErrorCategory::MakeUnexpected< Agent >( response->status );
+            return HttpErrorCategory::MakeUnexpected( response->status );
 
         return nlohmann::json::parse( response->body )[ "data" ].get< Agent >();
     }

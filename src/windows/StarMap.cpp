@@ -12,7 +12,7 @@
 
 namespace lst
 {
-    constexpr auto GRID_SIZE = ImVec2{ 100.0f, 100.0f };
+    constexpr auto GRID_SIZE = ImVec2{ 200.0f, 200.0f };
 
     void StarMap::DrawWindow()
     {
@@ -118,10 +118,10 @@ namespace lst
 
             auto offset = m_canvas.ViewOrigin() * ( 1.0f / m_canvas.ViewScale() );
             for ( float x = fmodf( offset.x, GRID_SIZE.x ); x < viewSize.x; x += GRID_SIZE.x )
-                ImGui::GetWindowDrawList()->AddLine( ImVec2( x - GRID_SIZE.x / 2.0f, 0.0f ) + viewPos, ImVec2( x - GRID_SIZE.x / 2.0f, viewSize.y ) + viewPos, ImColor( 1.0f, 1.0f, 1.0f, 0.25f ), 1.0f );
+                ImGui::GetWindowDrawList()->AddLine( ImVec2( x - GRID_SIZE.x / 2.0f, 0.0f ) + viewPos, ImVec2( x - GRID_SIZE.x / 2.0f, viewSize.y ) + viewPos, ImColor( 1.0f, 1.0f, 1.0f, 0.25f * ImMin( m_canvas.ViewScale(), 1.0f ) ), 1.0f );
 
             for ( float y = fmodf( offset.y, GRID_SIZE.y ); y < viewSize.y; y += GRID_SIZE.y )
-                ImGui::GetWindowDrawList()->AddLine( ImVec2( 0.0f, y - GRID_SIZE.y / 2.0f ) + viewPos, ImVec2( viewSize.x, y - GRID_SIZE.y / 2.0f ) + viewPos, ImColor( 1.0f, 1.0f, 1.0f, 0.25f ), 1.0f );
+                ImGui::GetWindowDrawList()->AddLine( ImVec2( 0.0f, y - GRID_SIZE.y / 2.0f ) + viewPos, ImVec2( viewSize.x, y - GRID_SIZE.y / 2.0f ) + viewPos, ImColor( 1.0f, 1.0f, 1.0f, 0.25f * ImMin( m_canvas.ViewScale(), 1.0f ) ), 1.0f );
 
             auto & systems = s_systems.value();
             for ( auto & system : systems )
@@ -130,7 +130,9 @@ namespace lst
 
                 {
                     ImGui::PushStyleColor( ImGuiCol_Text, ( ImU32 )ImColor( 1.0f, 1.0f, 0.0f, 1.0f ) );
+                    ImGui::SetWindowFontScale( 1.25f );
                     ImGui::RenderText( origin + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, std::format( ICON_FA_SUN ).c_str() );
+                    ImGui::SetWindowFontScale( 1.0f );
                     ImGui::PopStyleColor();
                 }
 
@@ -146,16 +148,33 @@ namespace lst
                         ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, ICON_FA_MOON );
                         ImGui::SetWindowFontScale( 1.0f );
                     }
+                    else if ( waypoint.type == "ORBITAL_STATION" )
+                    {
+                        pos += ImVec2{ 15.0f, 15.0f };
+
+                        ImGui::SetWindowFontScale( 0.5f );
+                        ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, ICON_FA_SATELLITE );
+                        ImGui::SetWindowFontScale( 1.0f );
+                    }
+                    else if ( waypoint.type == "ASTEROID_FIELD" )
+                    {
+                        ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, ICON_FA_METEOR );
+                    }
                     else if ( waypoint.type == "PLANET" || waypoint.type == "GAS_GIANT" )
                     {
                         float radius = ImSqrt( ImLengthSqr( origin - pos ) );
 
-                        ImGui::GetWindowDrawList()->AddCircle( origin, radius, ImColor( 0.3f, 0.3f, 0.0f, 1.0f ) );
+                        ImGui::GetWindowDrawList()->AddCircle( origin, radius, ImColor( 0.3f, 0.3f, 0.0f, 0.75f ) );
                         ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, ICON_FA_GLOBE );
+                    }
+                    else if ( waypoint.type == "JUMP_GATE" )
+                    {
+                        ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, ICON_FA_GROUP_ARROWS_ROTATE );
                     }
                     else
                     {
                         ImGui::RenderBullet( ImGui::GetWindowDrawList(), pos, ImColor( 1.0f, 0.0f, 0.0f, 1.0f ) );
+                        ImGui::RenderText( pos + ImVec2{ -ImGui::GetTextLineHeight() / 2.0f, -ImGui::GetTextLineHeight() / 2.0f }, waypoint.type.c_str() );
                     }
 
                 }

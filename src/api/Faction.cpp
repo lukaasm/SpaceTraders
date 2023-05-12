@@ -1,9 +1,9 @@
-#include "Contract.hpp"
+#include "Faction.hpp"
 #include "Endpoint.hpp"
 
 namespace lst::api
 {
-    PagedResult< Contract > GetContracts( size_t page /*= 1*/, size_t limit /*= 20 */ )
+    PagedResult< Faction > GetFactions( size_t page /*= 1*/, size_t limit /*= 20 */ )
     {
         httplib::Params body =
         {
@@ -13,22 +13,21 @@ namespace lst::api
 
         auto & endpoint = GetEndpoint();
 
-        auto response = GetEndpoint().Get( "v2/my/contracts", body, {} );
+        auto response = GetEndpoint().Get( "v2/factions", body, {} );
         if ( response->status != 200 )
             return HttpErrorCategory::MakeUnexpected( response->status );
 
-        return nlohmann::json::parse( response->body )[ "data" ].get< std::vector<Contract> >();
+        return nlohmann::json::parse( response->body )[ "data" ].get< std::vector<Faction> >();
     }
 
-    Result< Contract > GetContract( const std::string & contractId )
+    Result<Faction> GetFaction( const std::string & symbol )
     {
         auto & endpoint = GetEndpoint();
 
-        auto response = GetEndpoint().Get( std::format( "v2/my/contracts/{}", contractId ) );
+        auto response = GetEndpoint().Get( std::format( "v2/factions/{}", symbol ) );
         if ( response->status != 200 )
             return HttpErrorCategory::MakeUnexpected( response->status );
 
-        return nlohmann::json::parse( response->body )[ "data" ].get< Contract >();
+        return nlohmann::json::parse( response->body )[ "data" ].get< Faction >();
     }
-
 }

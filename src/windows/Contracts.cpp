@@ -11,7 +11,7 @@ namespace lst
 {
     void Contracts::DrawWindow()
     {
-        static auto s_contracts = api::GetMyContracts();
+        static auto s_contracts = api::GetContracts();
         if ( !s_contracts.has_value() )
             return ImGui::TextDisabled( "Failed to acquired contracts list!" );
 

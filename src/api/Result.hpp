@@ -32,8 +32,7 @@ namespace lst::api
             return std::error_code{status, s_category};
         }
 
-        template<typename T>
-        static Result< T > MakeUnexpected( int status )
+        static tl::unexpected< std::error_code > MakeUnexpected( int status )
         {
             return tl::make_unexpected( MakeError( status ) );
         }
