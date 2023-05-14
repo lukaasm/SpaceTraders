@@ -20,10 +20,6 @@
                 "VCPKG_INSTALLED_DIR": "${sourceDir}/.build/vcpkg_installed",
                 "VCPKG_TARGET_TRIPLET": "x64-windows",
                 "VCPKG_HOST_TRIPLET": "x64-windows",
-                "CMAKE_TOOLCHAIN_FILE": {
-                    "type": "FILEPATH",
-                    "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-                },
                 "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
                 "CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG": {
                     "type": "FILEPATH",
